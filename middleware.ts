@@ -23,7 +23,8 @@ export default async function middleware(request: NextRequest) {
   const isProtectedRoute =
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/course") ||
-    pathname.startsWith("/create-course");
+    pathname.startsWith("/create-course") ||
+    pathname.startsWith("/billing");
 
   if (!isProtectedRoute) {
     return NextResponse.next();

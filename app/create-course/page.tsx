@@ -12,6 +12,7 @@ import {
 import { ChapterReview } from "@/components/create-course/ChapterReview";
 import { generateCourseAction } from "@/app/actions/generate-course";
 import { useRouter } from "next/navigation";
+import { useBillingStore } from "@/lib/store/billing-store";
 
 export default function CreateCoursePage() {
   const [step, setStep] = useState<"form" | "chapters">("form");
@@ -23,12 +24,19 @@ export default function CreateCoursePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { deductCredits, hasEnoughCredits } = useBillingStore();
 
   useEffect(() => {
     router.prefetch("/dashboard");
   }, [router]);
 
   const handleFormSubmit = async (data: CourseFormData) => {
+    if (!hasEnoughCredits(10)) {
+      toast.error("Not enough credits to generate a course.");
+      router.push("/billing");
+      return;
+    }
+
     setFormData(data);
     setIsGenerating(true);
     setError(null);
@@ -40,6 +48,7 @@ export default function CreateCoursePage() {
         toast.error(res.error || "Failed to generate course.");
         setIsGenerating(false);
       } else {
+        deductCredits(10);
         toast.success(
           "Course generation queued. Your course will be available soon!",
         );
