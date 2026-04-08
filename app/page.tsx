@@ -6,6 +6,7 @@ import {
   Brain,
   BarChart3,
   CheckCircle2,
+  PlayCircle,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -48,27 +49,12 @@ export default function Home() {
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
           </Link>
           <Link
-            href="#features"
-            className="inline-flex items-center justify-center rounded-xl text-base font-medium transition-colors text-gray-400 hover:text-white h-13 px-8 py-3.5"
+            href="/course/c743ec58-f854-4a10-b883-227e9137f5f6?chapterId=f3843f05-6f49-4415-9077-24b9af34fefd"
+            className="group inline-flex items-center justify-center rounded-xl text-base font-medium transition-all duration-300 border border-white/[0.15] text-gray-300 hover:text-white hover:border-white/30 h-13 px-8 py-3.5 hover:bg-white/[0.04]"
           >
-            See how it works
+            <PlayCircle className="w-4 h-4 mr-2 text-indigo-400 group-hover:scale-110 transition-transform" />
+            Try Demo Course
           </Link>
-        </div>
-
-        {/* Social proof */}
-        <div className="mt-24 flex flex-col items-center gap-4">
-          <div className="flex -space-x-2">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="w-8 h-8 rounded-full border-2 border-[#0a0a0a] bg-gradient-to-br from-gray-700 to-gray-800"
-              />
-            ))}
-          </div>
-          <p className="text-sm text-gray-500">
-            Joined by <span className="text-gray-300 font-medium">12,000+</span>{" "}
-            learners this month
-          </p>
         </div>
       </section>
 
@@ -251,30 +237,6 @@ export default function Home() {
                 Contact Sales
               </button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════  CTA  ═══════════════════════════════════════════ */}
-      <section className="relative w-full px-6 sm:px-10 lg:px-16 py-32">
-        <div className="max-w-4xl mx-auto text-center relative">
-          <div className="absolute inset-0 -m-16 rounded-3xl bg-gradient-to-b from-indigo-500/[0.06] to-purple-500/[0.03] border border-white/[0.04] pointer-events-none" />
-          <div className="relative">
-            <h2 className="text-3xl sm:text-5xl font-bold text-white mb-6 leading-tight">
-              Ready to transform the way
-              <br className="hidden sm:block" /> you learn?
-            </h2>
-            <p className="text-lg text-gray-400 mb-10 max-w-xl mx-auto">
-              Join thousands of learners using AI to master new skills faster
-              than ever before.
-            </p>
-            <Link
-              href="/dashboard"
-              className="group inline-flex items-center justify-center rounded-xl text-base font-medium transition-all duration-300 bg-white text-black hover:bg-gray-100 h-13 px-10 py-3.5 shadow-[0_0_30px_rgba(255,255,255,0.08)] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:scale-[1.02]"
-            >
-              Get Started for Free
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
           </div>
         </div>
       </section>

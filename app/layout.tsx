@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { MatrixRain } from "@/components/MatrixRain";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Removed Google Fonts due to network issues
+// Using basic fallback variables
+const geistSans = { variable: "--font-geist-sans" };
+const geistMono = { variable: "--font-geist-mono" };
 
 export const metadata: Metadata = {
   title: "AI Course Generator",
@@ -37,7 +31,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <MatrixRain />
+          <Analytics/>
           {children}
           <Toaster />
         </ThemeProvider>

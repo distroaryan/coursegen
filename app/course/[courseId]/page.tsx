@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import { ChevronLeft } from "lucide-react";
 import { CourseSidebar } from "@/components/CourseSidebar";
 import { CourseSidebarDrawer } from "@/components/CourseSidebarDrawer";
@@ -11,6 +12,29 @@ import { NextChapterButton } from "@/components/NextChapterButton";
 import { ChapterContent } from "@/components/ChapterContent";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Badge } from "@/components/ui/badge";
+
+// Cached DB lookups — revalidates every 60 s or when explicitly purged
+const getCourseWithChapters = unstable_cache(
+  async (courseId: string) => {
+    const [courseRecord] = await db
+      .select()
+      .from(courses)
+      .where(eq(courses.id, courseId));
+
+    if (!courseRecord) return null;
+
+    const courseChapters = await db
+      .select()
+      .from(chaptersSchema)
+      .where(eq(chaptersSchema.courseId, courseId))
+      .orderBy(asc(chaptersSchema.order));
+
+    return { courseRecord, courseChapters };
+  },
+  ["course-with-chapters"],
+  { revalidate: 60, tags: ["course"] },
+);
+
 
 interface CoursePageProps {
   params: Promise<{ courseId: string }>;
@@ -24,20 +48,10 @@ export default async function CoursePage({
   const { courseId } = await params;
   const { chapterId } = await searchParams;
 
-  const [courseRecord] = await db
-    .select()
-    .from(courses)
-    .where(eq(courses.id, courseId));
+  const cached = await getCourseWithChapters(courseId);
+  if (!cached) notFound();
 
-  if (!courseRecord) {
-    notFound();
-  }
-
-  const courseChapters = await db
-    .select()
-    .from(chaptersSchema)
-    .where(eq(chaptersSchema.courseId, courseId))
-    .orderBy(asc(chaptersSchema.order));
+  const { courseRecord, courseChapters } = cached;
 
   // Map DB data to CourseData structure
   const courseData: CourseData = {
@@ -72,6 +86,8 @@ export default async function CoursePage({
   );
 
   const videoUrl = activeChapter.video_urls?.[0];
+  const DEMO_COURSE_ID = "c743ec58-f854-4a10-b883-227e9137f5f6";
+  const isDemoCourse = courseId === DEMO_COURSE_ID;
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-[#0a0a0a] text-gray-200 font-sans relative selection:bg-purple-500/30 overflow-x-hidden">
@@ -83,14 +99,22 @@ export default async function CoursePage({
         <main className="flex-1 min-w-0 lg:w-3/4 overflow-y-auto">
           <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12 w-full">
             {/* Back Navigation */}
-            <div className="mb-8">
+            <div className="mb-8 flex items-center justify-between">
               <Link
-                href="/dashboard"
+                href={isDemoCourse ? "/" : "/dashboard"}
                 className="cursor-pointer inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Back to Dashboard
+                {isDemoCourse ? "Back to Home" : "Back to Dashboard"}
               </Link>
+              {isDemoCourse && (
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                >
+                  Sign in to save progress →
+                </Link>
+              )}
             </div>
 
             {/* Chapter Title */}
