@@ -4,6 +4,28 @@ An intelligent web application that allows users to generate comprehensive, stru
 
 ---
 
+## 📸 Screenshots
+
+<div align="center">
+  <img src="public/homepage.png" alt="CourseGen Homepage" width="80%"/>
+  <br/>
+  <em>Homepage - Describe what you want to learn</em>
+</div>
+<br/>
+<div align="center">
+  <img src="public/dashboard.png" alt="CourseGen Dashboard" width="80%"/>
+  <br/>
+  <em>Dashboard - Manage your generated courses</em>
+</div>
+<br/>
+<div align="center">
+  <img src="public/coursepage.png" alt="CourseGen Course Page" width="80%"/>
+  <br/>
+  <em>Course Page - Rich markdown content and curated YouTube videos</em>
+</div>
+
+---
+
 ## 🚀 Features
 
 - **Prompt-to-Course Generation:** Simply describe what you want to learn, and the AI builds a structured course skeleton (Units and Chapters).
@@ -128,11 +150,24 @@ coursegen/
    BETTER_AUTH_SECRET=your_auth_secret
    BETTER_AUTH_URL=http://localhost:3000
 
+   # Google OAuth (Better Auth)
+   GOOGLE_CLIENT_ID=
+   GOOGLE_CLIENT_SECRET=
+
    # AI integration
    GROQ_API_KEY=your_groq_api_key
+   GOOGLE_API_KEY=
+   PEXELS_API_KEY
 
-   # YouTube integration
-   YOUTUBE_API_KEY=your_youtube_api_key
+   # Security & App Configuration
+   ARCJET_KEY=
+   NEXT_PUBLIC_APP_URL=
+
+   # Stripe
+   STRIPE_SECRET_KEY=
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+   STRIPE_WEBHOOK_SECRET= 
+   
    ```
 
 3. **Initialize the Database**
@@ -156,3 +191,9 @@ coursegen/
 
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000) to start generating courses!
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
